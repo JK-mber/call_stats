@@ -2,11 +2,11 @@
 Decorator for method call statistics (count and runtime)
 
 Usage:
-    >>> @call_stats \
-        def f1(): \
+    >>> @call_stats
+        def f1():
             pass
-    >>> @call_stats \
-        def f2(): \
+    >>> @call_stats
+        def f2():
             pass
     >>> f1()
     >>> f1()
@@ -36,11 +36,11 @@ class call_stats():
     Decorator. Saves the the number of times a function is called along with the total processing time
 
     Example:
-        >>> @call_stats\
-            def f1():\
+        >>> @call_stats
+            def f1():
                 pass
-        >>> @call_stats\
-            def f2():\
+        >>> @call_stats
+            def f2():
                 pass
         >>> f1()
         >>> f1()
@@ -57,7 +57,7 @@ class call_stats():
     _instances = {}
 
     def __init__(self, func):
-        update_wrapper(self, func) #Updates the meta variables
+        update_wrapper(self, func)  # Updates the meta variables
         self._func = func
         self._call_count = 0
         self._n_call_stat_hist = 1000
@@ -80,8 +80,8 @@ class call_stats():
 
         Returns the call stats for a given function in the format ['function_name', call_count, call_history]
         """
-        return [self.__name__, self._call_count, np.sum(self._call_hist), \
-            np.mean(self._call_hist), np.std(self._call_hist)]
+        return [self.__name__, self._call_count, np.sum(self._call_hist),
+                np.mean(self._call_hist), np.std(self._call_hist)]
 
     @call_stats.setter
     def call_stats(self, value):
@@ -96,14 +96,13 @@ class call_stats():
         self._n_call_stat_hist = value
         self._call_hist = deque(maxlen=self.n_call_stat_hist)
 
-
     def print_call_stats(self):
         """Prints the method call statistics of the function"""
         name, count, tot, mean, std = self.call_stats
         if count is 0:
             print("%s() called 0 times" % name)
             return None
-        print('%s() called %i times. Total %.2es, mean %.2es, std %.2es' % \
+        print('%s() called %i times. Total %.2es, mean %.2es, std %.2es' %
               (name, count, tot, mean, std))
         return None
 
@@ -144,7 +143,7 @@ if __name__ == "__main__":
     from random import randint
 
     for i in range(0,6):
-        add(randint(5,10),randint(500,1000))
+        add(randint(5, 10), randint(500, 1000))
     fib(5)
 
     call_stats.print_all_call_stats()
