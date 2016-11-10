@@ -3,27 +3,30 @@ Decorator for method call statistics (count and runtime)
 
 Usage:
     >>> @call_stats
-        def f1():
-            pass
+    ... def add(a, b):
+    ...     return a+b
+    ...
     >>> @call_stats
-        def f2():
-            pass
-    >>> f1()
-    >>> f1()
-    >>> f2()
-    >>> f1.call_stats
-    ['f1', 2, 3.0994415283203125e-06]
-    >>> add.print_call_stats()
-    f1() called 2 times. Total runtime 3.10e-06s (1.55e-06s per call)
+    ... def fib(n):
+    ...     if n <= 1:
+    ...         return n
+    ...     t = fib(n-1) + fib(n-2)
+    ...     return t
+    ...
+    >>> for i in range(2):
+    ...     add(2, 5)
+    7
+    7
+    >>> fib(10)
+    55
     >>> call_stats.print_all_call_stats()
-    f1() called 2 times. Total runtime 3.10e-06s (1.55e-06s per call)
-    f2() called 1 times. Total runtime 1.43e-06s (1.43e-06s per call)
+    fib() called 177 times. Total 2.13e-03s, mean 1.20e-05s, std 3.54e-05s
+    add() called 6 times. Total 4.77e-06s, mean 7.95e-07s, std 6.55e-07s
 
 
 Author:
     Name: Johannes Engell Kamber
-    Last edited: 2016-10-30
-    Licence: See licence.txt
+    Licence: See licence file
 """
 
 from functools import update_wrapper
@@ -37,21 +40,27 @@ class call_stats():
 
     Example:
         >>> @call_stats
-            def f1():
-                pass
+        ... def add(a, b):
+        ...     return a+b
+        ...
         >>> @call_stats
-            def f2():
-                pass
-        >>> f1()
-        >>> f1()
-        >>> f2()
-        >>> f1.call_stats
-        ['f1', 2, 3.0994415283203125e-06]
-        >>> f1.print_call_stats()
-        f1() called 2 times. Total runtime 3.10e-06s (1.55e-06s per call)
+        ... def fib(n):
+        ...     if n <= 1:
+        ...         return n
+        ...     t = fib(n-1) + fib(n-2)
+        ...     return t
+        ...
+        >>> for i in range(2):
+        ...     add(2, 5)
+        7
+        7
+        >>> fib(10)
+        55
         >>> call_stats.print_all_call_stats()
-        f1() called 2 times. Total runtime 3.10e-06s (1.55e-06s per call)
-        f2() called 1 times. Total runtime 1.43e-06s (1.43e-06s per call)
+        fib() called 177 times. Total 2.13e-03s, mean 1.20e-05s, std 3.54e-05s
+        add() called 6 times. Total 4.77e-06s, mean 7.95e-07s, std 6.55e-07s
+
+
     """
 
     _instances = {}
@@ -137,13 +146,13 @@ if __name__ == "__main__":
         t = fib(n-1) + fib(n-2)
         return t
 
-    add.n_call_stat_hist = 10000
-    fib.n_call_stat_hist = 10000
+    add.n_call_stat_hist = 1000
+    fib.n_call_stat_hist = 1000
 
     from random import randint
 
     for i in range(0,6):
-        add(randint(5, 10), randint(500, 1000))
-    fib(5)
+        add(5, 5)
+    fib(10)
 
     call_stats.print_all_call_stats()
